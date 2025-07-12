@@ -19,9 +19,26 @@ exports.askQuestion = async (req, res) => {
 
 exports.getAllQuestions = async (req, res) => {
   try {
-    const questions = await Question.find().populate('author', 'username').sort({ createdAt: -1 });
-    res.json(questions);
+    const questions = await Question.find()
+      .populate('askedBy', 'username')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(questions);
   } catch (err) {
+    console.error("❌ Error in getAllQuestions:", err.message);
     res.status(500).json({ message: 'Failed to load questions' });
+  }
+};
+
+exports.getSingleQuestion = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id)
+      .populate('askedBy', 'username');
+    if (!question) return res.status(404).json({ message: 'Question not found' });
+
+    res.status(200).json(question);
+  } catch (err) {
+    console.error("❌ Error fetching single question:", err.message);
+    res.status(500).json({ message: 'Error loading question' });
   }
 };

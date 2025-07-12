@@ -26,7 +26,7 @@ exports.getAnswers = async (req, res) => {
   const { questionId } = req.params;
   try {
     const answers = await Answer.find({ question: questionId })
-      .populate('author', 'username')
+      .populate('asked', 'username')
       .sort({ createdAt: -1 });
     res.json(answers);
   } catch (err) {
