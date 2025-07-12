@@ -6,6 +6,12 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/questions', require('./routes/questionRoutes'));
+app.use('/api/answers', require('./routes/answerRoutes'));
+
+
+
 
 app.get('/', (req, res) => {
   res.send('StackIt API is running ');
